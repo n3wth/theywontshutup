@@ -42,7 +42,7 @@ html {
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Bricolage Grotesque', sans-serif;
   overflow-x: hidden;
   cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='3' fill='%23dbf226'/%3E%3Ccircle cx='12' cy='12' r='8' stroke='%23ff00c3' stroke-width='1' fill='none'/%3E%3C/svg%3E"), crosshair;
 }
@@ -490,6 +490,58 @@ body {
 
 .animate-spin-slow {
   animation: spin-slow 20s linear infinite;
+}
+
+/* ==========================================================================
+   ACCESSIBILITY: REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-marquee,
+  .animate-marquee-fast,
+  .animate-marquee-reverse,
+  .animate-pulse-ring,
+  .animate-wiggle,
+  .animate-spin-slow,
+  .animate-gradient-x,
+  .animate-float,
+  .holo-foil,
+  .glitch-text::before,
+  .glitch-text::after {
+    animation: none !important;
+  }
+
+  .scanlines,
+  .vhs-tracking,
+  .noise-overlay {
+    animation: none !important;
+  }
+}
+
+/* ==========================================================================
+   TRUST CHIPS
+   ========================================================================== */
+
+.trust-chip {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(6px);
+}
+
+.trust-chip strong {
+  color: var(--acid-green);
+}
+
+.trust-chip-light {
+  border-color: rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.03);
+  color: rgba(0, 0, 0, 0.65);
 }
 
 /* ==========================================================================

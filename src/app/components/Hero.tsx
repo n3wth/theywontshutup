@@ -1,10 +1,11 @@
 import { useRef, useState, useEffect } from "react";
-import { Phone, Zap, Skull, Heart, Star } from "lucide-react";
+import { Phone, Zap, Skull, Heart, Star, ArrowRight } from "lucide-react";
 import { Button } from "./ui/button";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGame } from "../hooks/useGameState";
+import { useReducedMotion } from "@n3wth/ui";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -46,11 +47,13 @@ const ChaosParticle = ({ delay, color }: { delay: number; color: string }) => {
 export function Hero() {
   const phoneNumber = "+1 (415) 360-0751";
   const containerRef = useRef<HTMLDivElement>(null);
-  const { addChaos, gameState } = useGame();
+  const { addChaos } = useGame();
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const prefersReducedMotion = useReducedMotion();
 
   // Track mouse for parallax effects
   useEffect(() => {
+    if (prefersReducedMotion) return;
     const handleMouseMove = (e: MouseEvent) => {
       setMousePos({
         x: (e.clientX / window.innerWidth - 0.5) * 2,
@@ -59,9 +62,10 @@ export function Hero() {
     };
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+  }, [prefersReducedMotion]);
 
   useGSAP(() => {
+    if (prefersReducedMotion) return;
     const tl = gsap.timeline({
       defaults: { ease: "power4.out" }
     });
@@ -289,15 +293,17 @@ export function Hero() {
     <section ref={containerRef} className="hero-section relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#0a0a0a]">
 
       {/* Chaos Particles - floating icons */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(12)].map((_, i) => (
-          <ChaosParticle
-            key={i}
-            delay={i * 0.8}
-            color={["#dbf226", "#ff00c3", "#04d9ff", "#ff5e00"][i % 4]}
-          />
-        ))}
-      </div>
+      {!prefersReducedMotion && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(8)].map((_, i) => (
+            <ChaosParticle
+              key={i}
+              delay={i * 0.8}
+              color={["#dbf226", "#ff00c3", "#04d9ff", "#ff5e00"][i % 4]}
+            />
+          ))}
+        </div>
+      )}
 
       {/* Dynamic Background Grid - more intense */}
       <div className="hero-bg-grid absolute inset-0 opacity-0 pointer-events-none"
@@ -312,9 +318,9 @@ export function Hero() {
            }} />
 
       {/* Animated Gradient Orbs - MASSIVE and more vibrant */}
-      <div className="hero-orb hero-orb-1 absolute top-[10%] left-[15%] w-[500px] h-[500px] bg-[#ff00c3]/30 rounded-full blur-[150px]" />
-      <div className="hero-orb hero-orb-2 absolute bottom-[10%] right-[10%] w-[600px] h-[600px] bg-[#04d9ff]/25 rounded-full blur-[180px]" />
-      <div className="hero-orb hero-orb-3 absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-[#dbf226]/15 rounded-full blur-[120px]" />
+      <div className="hero-orb hero-orb-1 absolute top-[10%] left-[15%] w-[420px] h-[420px] bg-[#ff00c3]/25 rounded-full blur-[140px] hidden md:block" />
+      <div className="hero-orb hero-orb-2 absolute bottom-[8%] right-[8%] w-[520px] h-[520px] bg-[#04d9ff]/20 rounded-full blur-[160px] hidden md:block" />
+      <div className="hero-orb hero-orb-3 absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[360px] h-[360px] bg-[#dbf226]/12 rounded-full blur-[110px]" />
 
       {/* Animated rings */}
       <div className="hero-ring absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] border border-[#dbf226]/20 rounded-full pointer-events-none" />
@@ -382,11 +388,19 @@ export function Hero() {
         </div>
 
         {/* Subtitle with Tape - enhanced */}
-        <div className="relative inline-block mb-12 md:mb-16 transform rotate-[1deg] hover:rotate-0 transition-all duration-500 hover:scale-105">
+        <div className="relative inline-block mb-8 md:mb-10 transform rotate-[1deg] hover:rotate-0 transition-all duration-500 hover:scale-105">
           <div className="hero-tape absolute -top-4 left-1/2 -translate-x-1/2 w-36 h-7 tape" />
           <p className="hero-subtitle font-scribble text-lg md:text-2xl lg:text-3xl bg-black/80 text-white px-6 py-5 border-2 border-dashed border-[#dbf226] shadow-[6px_6px_0px_#dbf226] backdrop-blur-sm">
-            Four AI friends you can actually call. Real voices. Real conversation. No app required.
+            Call four AI friends. Real voices. No menu. No app. Just talk.
           </p>
+        </div>
+
+        {/* Trust strip */}
+        <div className="hero-trust flex flex-wrap items-center justify-center gap-3 md:gap-4 text-[10px] md:text-xs font-mono uppercase tracking-[0.25em] text-white/70 mb-10">
+          <span className="trust-chip">Real voices</span>
+          <span className="trust-chip">24/7 pickup</span>
+          <span className="trust-chip">No app required</span>
+          <span className="trust-chip"><strong>Under 5 sec</strong> to connect</span>
         </div>
 
         {/* Interactive Button Zone - SUPERCHARGED */}
@@ -428,6 +442,16 @@ export function Hero() {
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 pointer-events-none" />
             </Button>
 
+            {/* Secondary action */}
+            <div className="mt-6 flex justify-center">
+              <a
+                href="#what-to-expect"
+                className="inline-flex items-center gap-2 font-mono text-xs md:text-sm uppercase tracking-[0.3em] text-white/70 hover:text-[#dbf226] transition-colors"
+              >
+                See how it works <ArrowRight className="w-4 h-4" />
+              </a>
+            </div>
+
             {/* Scribble Call-to-action - enhanced */}
             <div className="hero-scribble absolute -right-4 md:-right-48 -bottom-20 md:bottom-auto md:top-1/2 md:-translate-y-1/2 font-scribble text-base md:text-xl rotate-[8deg] whitespace-nowrap">
               <span className="block text-[#ff5e00]">just dial</span>
@@ -442,6 +466,14 @@ export function Hero() {
               <span className="block text-[8px]">no filter either</span>
             </div>
           </div>
+        </div>
+
+        {/* Micro flow */}
+        <div className="hero-microflow mt-8 md:mt-10 w-full flex flex-wrap items-center justify-center gap-3 md:gap-4 text-[10px] md:text-xs font-mono uppercase tracking-[0.25em] text-white/50">
+          <span className="trust-chip">Dial</span>
+          <span className="trust-chip">Talk</span>
+          <span className="trust-chip">Hang up</span>
+          <span className="trust-chip">Call back anytime</span>
         </div>
       </div>
 

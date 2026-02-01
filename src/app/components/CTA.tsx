@@ -294,14 +294,20 @@ export function CTA() {
                 </h3>
 
                 {/* Subtext */}
-                <p className="font-mono text-base md:text-lg mb-10 text-center leading-relaxed">
+                <p className="font-mono text-base md:text-lg mb-8 text-center leading-relaxed">
                   <span className="block text-gray-600">
                     Sometimes you just need to talk it out.
                   </span>
                   <span className="block text-gray-600 mt-1">
-                    <span className="text-[#ff5e00] font-bold">Pick up the phone. They're listening.</span>
+                    <span className="text-[#ff5e00] font-bold">Pick up the phone. They pick up.</span>
                   </span>
                 </p>
+
+                <div className="mb-8 flex flex-wrap items-center justify-center gap-3 text-[10px] font-mono uppercase tracking-[0.25em] text-gray-600">
+                  <span className="trust-chip trust-chip-light">Real voices</span>
+                  <span className="trust-chip trust-chip-light">24/7</span>
+                  <span className="trust-chip trust-chip-light">No app</span>
+                </div>
 
                 {/* CTA Button */}
                 <Button

@@ -17,11 +17,20 @@ const messages = [
   { id: 6, sender: "Jolene", text: "Bless his heart, he tried.", align: "left", color: "#ff5e00", avatar: "J" },
 ];
 
-function MessageBubble({ msg, isVisible }: { msg: typeof messages[0]; isVisible: boolean }) {
+function MessageBubble({
+  msg,
+  isVisible,
+  prefersReducedMotion,
+}: {
+  msg: typeof messages[0];
+  isVisible: boolean;
+  prefersReducedMotion: boolean;
+}) {
   const bubbleRef = useRef<HTMLDivElement>(null);
   const [hasAnimated, setHasAnimated] = useState(false);
 
   useEffect(() => {
+    if (prefersReducedMotion) return;
     if (isVisible && !hasAnimated && bubbleRef.current) {
       gsap.fromTo(bubbleRef.current,
         {
@@ -41,7 +50,7 @@ function MessageBubble({ msg, isVisible }: { msg: typeof messages[0]; isVisible:
       );
       setHasAnimated(true);
     }
-  }, [isVisible, hasAnimated]);
+  }, [isVisible, hasAnimated, prefersReducedMotion]);
 
   if (!isVisible) return null;
 
@@ -49,7 +58,7 @@ function MessageBubble({ msg, isVisible }: { msg: typeof messages[0]; isVisible:
     <div
       ref={bubbleRef}
       className={`flex flex-col ${msg.align === "right" ? "items-end" : "items-start"}`}
-      style={{ opacity: 0 }}
+      style={{ opacity: prefersReducedMotion ? 1 : 0 }}
     >
       {/* Sender label with avatar */}
       <div className={`flex items-center gap-1.5 mb-1 px-2 ${msg.align === "right" ? "flex-row-reverse" : ""}`}>
@@ -107,6 +116,12 @@ export function ConversationDemo() {
   const lastTapRef = useRef(0);
   const prefersReducedMotion = useReducedMotion();
 
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      setVisibleMessages(messages.length);
+    }
+  }, [prefersReducedMotion]);
+
   // Random glitch effect - intensity based on chaos level
   useEffect(() => {
     if (prefersReducedMotion) return;
@@ -142,6 +157,7 @@ export function ConversationDemo() {
   };
 
   useGSAP(() => {
+    if (prefersReducedMotion) return;
     // Title entrance with split effect
     gsap.from(".demo-title-word", {
       y: 100,
@@ -486,6 +502,7 @@ export function ConversationDemo() {
                         key={msg.id}
                         msg={msg}
                         isVisible={idx < visibleMessages}
+                        prefersReducedMotion={prefersReducedMotion}
                       />
                     ))}
 

@@ -102,6 +102,7 @@ export function StickyPhoneBar() {
         {/* Phone Number - ALWAYS VISIBLE */}
         <a
           href={`tel:${phoneNumber}`}
+          aria-label={`Call ${phoneNumber}`}
           onClick={() => addChaos(15)}
           onMouseEnter={() => {
             setIsHovered(true);

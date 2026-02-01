@@ -4,6 +4,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGame } from "../hooks/useGameState";
+import { useReducedMotion } from "@n3wth/ui";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,7 +15,7 @@ const steps = [
     secondaryIcon: Zap,
     title: "You Call",
     subtitle: "Under 5 Seconds",
-    description: "Dial. Someone answers. No menus, no hold music, no 'press 1 for...' Just straight into conversation.",
+    description: "Dial. Someone answers. No menus, no hold music, no 'press 1.' Straight to conversation.",
     rotate: -4,
     color: "#dbf226",
     gradientFrom: "#dbf226",
@@ -27,7 +28,7 @@ const steps = [
     secondaryIcon: AlertTriangle,
     title: "They Talk Back",
     subtitle: "Not a Script",
-    description: "They remember what you said. They ask follow-up questions. They disagree with you. It's an actual conversation.",
+    description: "They remember context, ask follow-ups, and push back. It's a real conversation.",
     rotate: 3,
     color: "#ff00c3",
     gradientFrom: "#ff00c3",
@@ -40,7 +41,7 @@ const steps = [
     secondaryIcon: Skull,
     title: "You Leave",
     subtitle: "No Strings",
-    description: "Hang up. No 'before you go...' prompts. No subscription to cancel. Call back in 5 minutes or 5 months.",
+    description: "Hang up. No upsell prompts. No subscription to cancel. Call back whenever.",
     rotate: -2,
     color: "#04d9ff",
     gradientFrom: "#04d9ff",
@@ -49,13 +50,19 @@ const steps = [
   },
 ];
 
-function StepCard({ step, index }: { step: typeof steps[0]; index: number }) {
+function StepCard({
+  step,
+  prefersReducedMotion,
+}: {
+  step: typeof steps[0];
+  prefersReducedMotion: boolean;
+}) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const { addChaos } = useGame();
 
   useGSAP(() => {
-    if (!cardRef.current) return;
+    if (!cardRef.current || prefersReducedMotion) return;
 
     const card = cardRef.current;
 
@@ -245,8 +252,10 @@ function StepCard({ step, index }: { step: typeof steps[0]; index: number }) {
 export function WhatToExpect() {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
 
   useGSAP(() => {
+    if (prefersReducedMotion) return;
     // Title animation with 3D effect
     gsap.from(".expect-title", {
       y: 120,
@@ -371,7 +380,11 @@ export function WhatToExpect() {
   }, { scope: sectionRef });
 
   return (
-    <section ref={sectionRef} className="py-36 md:py-48 px-4 border-y-8 border-white bg-[#0a0a0a] relative overflow-hidden">
+    <section
+      id="what-to-expect"
+      ref={sectionRef}
+      className="py-36 md:py-48 px-4 border-y-8 border-white bg-[#0a0a0a] relative overflow-hidden"
+    >
 
       {/* Gradient overlays */}
       <div className="absolute inset-0 pointer-events-none">
@@ -480,7 +493,11 @@ export function WhatToExpect() {
           </div>
 
           {steps.map((step, index) => (
-            <StepCard key={step.title} step={step} index={index} />
+            <StepCard
+              key={step.title}
+              step={step}
+              prefersReducedMotion={prefersReducedMotion}
+            />
           ))}
         </div>
 

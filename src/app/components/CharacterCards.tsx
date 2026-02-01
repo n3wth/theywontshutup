@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Draggable } from "gsap/Draggable";
 import { useGame } from "../hooks/useGameState";
 import { characterFaces } from "./CharacterFaces";
+import { useReducedMotion } from "@n3wth/ui";
 
 gsap.registerPlugin(ScrollTrigger, Draggable);
 
@@ -65,9 +66,10 @@ function CharacterCard({ char, index }: { char: typeof characters[0]; index: num
   const [isHovered, setIsHovered] = useState(false);
   const { getCharacterDialogue, addChaos, trackCardDrag, gameState } = useGame();
   const IconComponent = char.icon;
+  const prefersReducedMotion = useReducedMotion();
 
   useGSAP(() => {
-    if (!cardRef.current) return;
+    if (!cardRef.current || prefersReducedMotion) return;
 
     // Animated glow pulse
     if (glowRef.current) {
