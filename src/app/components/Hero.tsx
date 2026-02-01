@@ -45,7 +45,7 @@ const ChaosParticle = ({ delay, color }: { delay: number; color: string }) => {
 };
 
 export function Hero() {
-  const phoneNumber = "+1 (415) 360-0751";
+  const phoneNumber = "+1 (855) 580-0508";
   const containerRef = useRef<HTMLDivElement>(null);
   const { addChaos } = useGame();
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });

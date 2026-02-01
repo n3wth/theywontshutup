@@ -9,7 +9,7 @@ import { useGame } from "../hooks/useGameState";
 gsap.registerPlugin(ScrollTrigger);
 
 export function CTA() {
-  const phoneNumber = "+1 (415) 360-0751";
+  const phoneNumber = "+1 (855) 580-0508";
   const sectionRef = useRef<HTMLElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const cardInnerRef = useRef<HTMLDivElement>(null);

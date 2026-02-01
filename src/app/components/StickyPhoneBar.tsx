@@ -6,7 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { useGame } from "../hooks/useGameState";
 
 export function StickyPhoneBar() {
-  const phoneNumber = "+1 (415) 360-0751";
+  const phoneNumber = "+1 (855) 580-0508";
   const barRef = useRef<HTMLDivElement>(null);
   const { addChaos, gameState } = useGame();
   const prefersReducedMotion = useReducedMotion();
