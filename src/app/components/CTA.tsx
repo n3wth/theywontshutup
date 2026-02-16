@@ -700,6 +700,15 @@ export function Footer() {
         {/* Divider */}
         <div className="my-10 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
+        {/* Legal links */}
+        <div className="flex items-center justify-center gap-4 text-[10px] font-mono text-white/30 uppercase tracking-wider mb-4">
+          <a href="/privacy" className="hover:text-white/60 transition-colors">Privacy</a>
+          <span>|</span>
+          <a href="/terms" className="hover:text-white/60 transition-colors">Terms</a>
+          <span>|</span>
+          <a href="/consent" className="hover:text-white/60 transition-colors">SMS Consent</a>
+        </div>
+
         {/* Bottom row */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-mono text-white/30 uppercase tracking-wider">
           <span>© 2026 They Won't Shut Up. All rights reserved.</span>
