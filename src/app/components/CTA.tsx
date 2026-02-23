@@ -673,7 +673,7 @@ export function Footer() {
             </p>
             <p className="font-mono text-xs text-white/40">
               Created by{" "}
-              <a href="https://newth.ai" target="_blank" rel="noopener noreferrer" className="text-white font-bold hover:text-[#dbf226] transition-colors">
+              <a href="https://n3wth.com" target="_blank" rel="noopener noreferrer" className="text-white font-bold hover:text-[#dbf226] transition-colors">
                 Newth.ai
               </a>
             </p>
