@@ -4,6 +4,7 @@ import { useReducedMotion } from "@n3wth/ui";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useGame } from "../hooks/useGameState";
+import { track } from "../../lib/analytics";
 
 export function StickyPhoneBar() {
   const phoneNumber = "+1 (855) 580-0508";
@@ -103,7 +104,10 @@ export function StickyPhoneBar() {
         <a
           href={`tel:${phoneNumber}`}
           aria-label={`Call ${phoneNumber}`}
-          onClick={() => addChaos(15)}
+          onClick={() => {
+            track('call_cta_click', { placement: 'sticky_bar' });
+            addChaos(15);
+          }}
           onMouseEnter={() => {
             setIsHovered(true);
             if (!prefersReducedMotion) {

@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGame } from "../hooks/useGameState";
+import { track } from "../../lib/analytics";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -116,6 +117,7 @@ export function CTA() {
   };
 
   const handleCallClick = () => {
+    track('call_cta_click', { placement: 'cta_primary' });
     addChaos(25);
 
     // Dramatic button click effect
@@ -330,6 +332,7 @@ export function CTA() {
                 <div className="mt-6 text-center">
                   <a
                     href={`tel:${phoneNumber}`}
+                    onClick={() => track('call_cta_click', { placement: 'cta_secondary' })}
                     className="font-mono text-2xl md:text-3xl font-bold tracking-wider text-black hover:text-[#ff00c3] transition-colors"
                   >
                     {phoneNumber}
@@ -545,6 +548,7 @@ export function StartupSection() {
               href="https://elevenlabs.io/conversational-ai"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => track('outbound_click', { target: 'elevenlabs' })}
               className="font-mono text-sm text-white/50 hover:text-[#04d9ff] transition-colors flex items-center gap-2"
             >
               <Mic className="w-4 h-4" />
@@ -667,13 +671,13 @@ export function Footer() {
           <div className="footer-item text-right">
             <p className="font-mono text-xs text-white/40 mb-1">
               Built with{" "}
-              <a href="https://elevenlabs.io" target="_blank" rel="noopener noreferrer" className="text-white font-bold hover:text-[#04d9ff] transition-colors">
+              <a href="https://elevenlabs.io" target="_blank" rel="noopener noreferrer" onClick={() => track('outbound_click', { target: 'elevenlabs' })} className="text-white font-bold hover:text-[#04d9ff] transition-colors">
                 ElevenLabs
               </a>
             </p>
             <p className="font-mono text-xs text-white/40">
               Created by{" "}
-              <a href="https://n3wth.com" target="_blank" rel="noopener noreferrer" className="text-white font-bold hover:text-[#dbf226] transition-colors">
+              <a href="https://n3wth.com" target="_blank" rel="noopener noreferrer" onClick={() => track('outbound_click', { target: 'n3wth' })} className="text-white font-bold hover:text-[#dbf226] transition-colors">
                 Newth.ai
               </a>
             </p>

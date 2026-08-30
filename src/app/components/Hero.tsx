@@ -6,6 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGame } from "../hooks/useGameState";
 import { useReducedMotion } from "@n3wth/ui";
+import { track } from "../../lib/analytics";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -426,6 +427,7 @@ export function Hero() {
             <Button
               className="hero-button relative z-20 bg-white hover:bg-[#ff00c3] text-black hover:text-white border-4 border-white text-xl md:text-3xl lg:text-4xl py-7 md:py-10 px-12 md:px-20 rounded-full font-gothic tracking-wider uppercase transition-all duration-300 hover:scale-110 active:scale-95 shadow-[12px_12px_0px_#dbf226] overflow-hidden cursor-pointer btn-neon"
               onClick={() => {
+                track('call_cta_click', { placement: 'hero' });
                 addChaos(30);
                 window.location.href = `tel:${phoneNumber}`;
               }}
